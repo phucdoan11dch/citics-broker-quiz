@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bạn là kiểu môi giới nào? | Citics Agent</title>
+<meta name="description" content="Khám phá nguyên mẫu môi giới của bạn và vai trò phù hợp trong mạng lưới CACN Citics.">
+
+<!-- Inter font với subset Vietnamese (quy định brand) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet" />
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: {
+            50:  '#EEF3FD', 100: '#D6E2FA', 200: '#A9C0F4',
+            300: '#7B9DEE', 400: '#4E7BE8', 500: '#0741DA',
+            600: '#0635B0', 700: '#052A88', 800: '#031F61', 900: '#02143B',
+          },
+          neutral: {
+            0: '#FFFFFF', 50: '#F7F8FA', 100: '#EEF0F4', 200: '#DDE1E8',
+            300: '#C4CAD4', 400: '#9BA3B2', 500: '#6B7280', 600: '#4B5563',
+            700: '#374151', 800: '#1F2937', 900: '#0F172A',
+          },
+        },
+        fontFamily: { sans: ['Inter', 'sans-serif'] },
+        borderRadius: { pill: '20px' },
+        boxShadow: { primary: '0 8px 16px -4px rgba(7, 65, 218, 0.25)' },
+      },
+    },
+  };
+</script>
+
+<style>
+  * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+  body { background: #FFFFFF; color: #1F2937; }
+
+  /* Button pill shape — Citics signature */
+  .btn-primary {
+    background: #0741DA; color: #fff; border-radius: 20px;
+    padding: 0.875rem 1.75rem; font-weight: 600; font-size: 1rem;
+    transition: all 0.2s ease; cursor: pointer; border: none;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: #0635B0;
+    box-shadow: 0 8px 16px -4px rgba(7, 65, 218, 0.25);
+    transform: translateY(-1px);
+  }
+  .btn-primary:disabled { background: #C4CAD4; color: #6B7280; cursor: not-allowed; transform: none; }
+
+  .btn-ghost {
+    background: transparent; color: #374151; border: none;
+    padding: 0.5rem 1rem; border-radius: 12px; cursor: pointer;
+    font-weight: 500; transition: all 0.15s ease;
+  }
+  .btn-ghost:hover { background: #EEF0F4; color: #0F172A; }
+
+  .option-btn {
+    display: block; width: 100%; text-align: left;
+    background: #FFFFFF; color: #1F2937;
+    border: 1.5px solid #DDE1E8; border-radius: 12px;
+    padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+    font-size: 1rem; line-height: 1.5;
+    transition: all 0.15s ease; cursor: pointer;
+  }
+  .option-btn:hover {
+    border-color: #0741DA; background: #EEF3FD;
+  }
+  .option-btn.selected {
+    border-color: #0741DA; background: #EEF3FD;
+    color: #052A88; font-weight: 500;
+  }
+  .option-btn .option-letter {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #EEF0F4; color: #4B5563; font-weight: 600;
+    margin-right: 0.75rem; font-size: 0.875rem;
+    transition: all 0.15s ease;
+  }
+  .option-btn.selected .option-letter {
+    background: #0741DA; color: #fff;
+  }
+
+  .input {
+    width: 100%; padding: 0.875rem 1rem;
+    border: 1.5px solid #DDE1E8; border-radius: 8px;
+    background: #fff; font-size: 1rem; color: #0F172A;
+    transition: border-color 0.15s ease;
+  }
+  .input:focus { outline: none; border-color: #0741DA; box-shadow: 0 0 0 3px #EEF3FD; }
+
+  .badge {
+    display: inline-block; padding: 0.25rem 0.75rem;
+    border-radius: 9999px; font-size: 0.75rem;
+    font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .badge-primary { background: #0741DA; color: #fff; }
+  .badge-secondary { background: #EEF3FD; color: #052A88; }
+
+  /* Screen transitions */
+  .screen { animation: slideIn 0.35s ease-out; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .result-reveal { animation: reveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes reveal {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    height: 4px; background: #EEF0F4; border-radius: 9999px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: #0741DA;
+    transition: width 0.3s ease;
+  }
+</style>
+</head>
+
+<body class="min-h-screen antialiased">
+
+<!-- HEADER -->
+<header class="border-b border-neutral-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <!-- Logo placeholder: checkmark-house mark -->
+      <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 10L12 3L21 10V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V10Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M8 13L11 16L16 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="font-semibold text-neutral-900 text-lg tracking-tight">Citics Agent</span>
+    </div>
+    <a href="https://citics.vn" class="text-sm text-neutral-600 hover:text-neutral-900 transition">citics.vn</a>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main id="app" class="max-w-screen-sm mx-auto px-4 sm:px-6 py-8 sm:py-12"></main>
+
+<!-- FOOTER -->
+<footer class="border-t border-neutral-100 mt-16 py-8 bg-neutral-50">
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 text-sm text-neutral-500 flex flex-col sm:flex-row justify-between gap-2">
+    <p>© 2026 Citics · Hệ điều hành quản trị và kết nối mạng lưới môi giới thế hệ mới</p>
+    <div class="flex gap-4">
+      <a href="https://agent.citics.vn" class="hover:text-primary-500 transition">Citics Agent</a>
+      <a href="https://citics.vn/lien-he" class="hover:text-primary-500 transition">Liên hệ</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   DATA: 8 NGUYÊN MẪU
+   ============================================================ */
+const ARCHETYPES = {
+  DH: {
+    code: 'DH',
+    name: 'Người Đồng Hành',
+    enName: 'Caregiver',
+    motto: 'Tôi không bán nhà — tôi đồng hành cùng khách suốt hành trình an cư.',
+    portrait: 'Bạn xem khách hàng là người cần được che chở. Giữ khách lâu năm, được giới thiệu qua nhiều thế hệ gia đình, và thường trở thành cố vấn tin cậy ngoài chuyện mua bán nhà.',
+    cacnPrimary: 'Buyer Agent',
+    cacnPrimaryReason: 'Bạn giỏi lắng nghe nhu cầu sâu, hướng dẫn khách mua lần đầu đi qua quyết định lớn của đời họ. Deal bạn chốt thường đến từ tin cậy, không phải áp lực.',
+    cacnSecondary: 'Listing Agent',
+    core: [
+      'Xây niềm tin sâu bền với khách, giữ mối quan hệ 5-10 năm',
+      'Kiên nhẫn lắng nghe, hiểu nỗi lo ẩn sau câu hỏi',
+      'Tỷ lệ khách giới thiệu cao — 60-80% khách đến từ giới thiệu',
+      'Xử lý tốt khách hàng lần đầu mua nhà, gia đình trẻ',
+    ],
+    obstacle: [
+      'Dành nhiều thời gian cho khách cũ, ít thời gian cho khách mới',
+      'Ngại đưa khách đến bước quyết định cuối, dù khách đã sẵn sàng',
+      'Hay nhận cả những khách chưa đủ điều kiện tài chính',
+      'Thu nhập ổn định nhưng khó tăng đột biến vì ít tiếp cận khách cao cấp',
+    ],
+    training: [
+      'Tham gia CACN với vai trò Buyer Agent để tập trung đúng sở trường',
+      'Học kỹ năng chốt có cấu trúc (dẫn dắt, không ép)',
+      'Chia thời gian: 30% cho khách mới, 70% cho khách hiện hữu',
+      'Citics Portal quản lý lịch chăm sóc từng khách không để sót; CiCi AI tra cứu nhanh dự án, pháp lý khi khách hỏi',
+    ],
+    competitive: 'Buyer Agent là vai trò cốt lõi trong chuỗi giao dịch — và khách mua lần đầu là phân khúc lớn nhất thị trường Việt Nam. Với chính sách hoa hồng Citics cho 2 dịch vụ mua bán (thứ cấp + sơ cấp), mỗi khách bạn chốt là thu nhập minh bạch, cộng thêm dòng khách giới thiệu bạn giỏi sẵn.',
+  },
+  KN: {
+    code: 'KN',
+    name: 'Người Kết Nối',
+    enName: 'Lover',
+    motto: 'Căn nhà không phải bốn bức tường — đó là nơi gia đình sống cuộc đời mơ ước.',
+    portrait: 'Bạn bán cảm xúc, không bán diện tích. Mạnh ở phân khúc trung-cao cấp, nhà nghỉ dưỡng. Khách nhớ bạn vì buổi xem nhà có mùi cà phê và nhạc nhẹ.',
+    cacnPrimary: 'Listing Agent (cao cấp)',
+    cacnPrimaryReason: 'Bạn biến căn nhà thành câu chuyện. Chủ nhà phân khúc cao cấp thích giao tài sản cho bạn vì bạn định vị được "chất" của căn nhà.',
+    cacnSecondary: 'Buyer Agent (cao cấp)',
+    core: [
+      'Kể chuyện tốt — biến căn nhà thành câu chuyện có cảm xúc',
+      'Gu thẩm mỹ tốt, hiểu thiết kế nội thất, phong cách sống',
+      'Kết nối được với khách hàng có điều kiện',
+      'Tạo trải nghiệm xem nhà đáng nhớ, tỷ lệ chốt sau lần xem cao',
+    ],
+    obstacle: [
+      'Nói nhiều về cảm xúc, ít dùng số liệu khi khách hỏi tài chính',
+      'Đôi khi định giá lệch thị trường vì quá tin vào giá trị cảm xúc',
+      'Làm theo cảm hứng, dòng khách không đều giữa các tháng',
+      'Khó làm việc với phân khúc đại chúng, khách chặt chẽ tài chính',
+    ],
+    training: [
+      'Tham gia CACN với vai trò Listing Agent chuyên phân khúc cao cấp',
+      'Kết hợp với Valuer trong mạng lưới để định giá sát thị trường',
+      'Viết nội dung thương hiệu cá nhân đều đặn',
+      'CiCi AI tra cứu nhanh giá thị trường, pháp lý khu vực; Citics Portal giữ thông tin từng căn hàng đầy đủ',
+    ],
+    competitive: 'Phân khúc cao cấp và BĐS nghỉ dưỡng Việt Nam đang tăng trưởng hai chữ số. Listing Agent cao cấp là vị trí hiếm trong CACN. Khi bạn chuyên sâu 1 phân khúc, mỗi deal ký gửi thường là tài sản lớn, hoa hồng đáng kể.',
+  },
+  CP: {
+    code: 'CP',
+    name: 'Người Chinh Phục',
+    enName: 'Hero',
+    motto: 'Không có deal khó — chỉ có deal chưa chịu mở.',
+    portrait: 'Bạn sống vì chỉ tiêu. Là người chốt được deal mà người khác bỏ cuộc, đeo bám khách 6 tháng không nản, coi mỗi tháng là một trận đánh.',
+    cacnPrimary: 'Buyer Agent',
+    cacnPrimaryReason: 'Bạn là người chốt. Deal khó, khách đàm phán gắt, khách do dự — đây là sân của bạn. Citics cần Buyer Agent bản lĩnh để đưa các thương vụ phức tạp về đích.',
+    cacnSecondary: 'Mortgage Agent',
+    core: [
+      'Kỷ luật cao — gọi 80-100 cuộc/ngày không cần ai nhắc',
+      'Không sợ bị từ chối — "không" với bạn chỉ là "chưa"',
+      'Kỹ năng đàm phán giá, xử lý khách từ chối tốt',
+      'Deal lớn, deal khó, deal pháp lý phức tạp — đây là sân của bạn',
+    ],
+    obstacle: [
+      'Cường độ làm việc cao liên tục dễ dẫn đến quá tải sau 6-12 tháng',
+      'Ít chăm sóc khách sau khi chốt, nên ít khách giới thiệu',
+      'Đôi khi cố chốt cả những khách không thực sự phù hợp',
+      'Với khách gia đình, nhịp tư vấn của bạn có thể quá nhanh',
+    ],
+    training: [
+      'Tham gia CACN với vai trò Buyer Agent + kiêm Mortgage Agent cho thu nhập kép',
+      'Dành thời gian chăm sóc khách sau khi chốt — 1 khách cũ đem về 2-3 khách mới',
+      'Đặt giới hạn giờ làm việc — nghỉ ngơi đủ để giữ phong độ',
+      'CiCi AI tra cứu nhanh chính sách vay khi đang điện thoại với khách; Citics Portal phân loại khách theo mức độ sẵn sàng',
+    ],
+    competitive: 'Thị trường xuống, khách khó, cạnh tranh cao — đây là lúc bạn thắng lớn. Kiêm đôi vai trò Buyer Agent + Mortgage Agent có nghĩa bạn sở hữu toàn bộ chuỗi giá trị từ "khách muốn mua" đến "khách có tiền mua" — hai chính sách hoa hồng cho cùng một khách.',
+  },
+  DD: {
+    code: 'DD',
+    name: 'Người Dẫn Dắt',
+    enName: 'Ruler',
+    motto: 'Một người môi giới giỏi bán 50 deal/năm. Một team 10 người tôi dựng bán 500.',
+    portrait: 'Bạn không hài lòng với vai trò cá nhân. Nhìn thấy cơ hội xây team, mở chi nhánh, hoặc trở thành trưởng phòng kinh doanh. Tư duy hệ thống, quan tâm quy trình.',
+    cacnPrimary: 'Store Manager',
+    cacnPrimaryReason: 'Bạn không còn chỉ bán cá nhân, bạn xây hệ thống. CACN trao cho bạn công cụ quản trị một sàn thế hệ mới — dashboard, chỉ tiêu, quy trình chuẩn hoá.',
+    cacnSecondary: 'Listing Agent',
+    core: [
+      'Tư duy tổ chức — biết cách phân vai, chia việc, đặt chỉ tiêu',
+      'Uy tín tự nhiên — người khác sẵn sàng đi theo',
+      'Quản trị tài chính cá nhân và đội nhóm tốt',
+      'Nhìn bức tranh lớn, ít sa đà chi tiết vụn vặt',
+    ],
+    obstacle: [
+      'Bận quản lý, ít trực tiếp chốt deal, dần mất cảm nhận thị trường',
+      'Áp lực lãnh đạo cao, khó chia sẻ với ai',
+      'Đã quen cách làm cũ hiệu quả, có thể chậm thay đổi',
+      'Đôi khi đầu tư vào hệ thống hoặc mở rộng sớm, chưa đủ nguồn lực',
+    ],
+    training: [
+      'Tham gia CACN với vai trò Store Manager — chính sách hoa hồng quản lý minh bạch trên toàn bộ doanh thu đội',
+      'Mỗi tuần vẫn tự chốt 1-2 deal để giữ nghiệp vụ và làm gương',
+      'Đầu tư đào tạo đội theo chuẩn Citics — nhân rộng kiến thức nhanh',
+      'Citics Portal dashboard điều hành đội, theo dõi hiệu suất không thiếu sót; CiCi AI hỗ trợ đội tra cứu thông tin nhanh',
+    ],
+    competitive: 'Thị trường môi giới VN đang chuyển từ cá nhân sang đội nhóm chuyên nghiệp. Store Manager trong CACN là người xây được sàn thế hệ mới với hạ tầng công nghệ và chính sách hoa hồng sẵn từ Citics. Bạn không phải tự xây từ con số không.',
+  },
+  PT: {
+    code: 'PT',
+    name: 'Nhà Phân Tích',
+    enName: 'Sage',
+    motto: 'Tôi không thuyết phục khách. Tôi đưa họ dữ liệu, họ tự quyết.',
+    portrait: 'Bạn là cố vấn BĐS đúng nghĩa. Biết quy hoạch từng quận, hiểu pháp lý sổ đỏ/sổ hồng, nắm lịch sử giá khu vực. Khách tìm đến bạn vì "cho tôi lời khuyên khách quan."',
+    cacnPrimary: 'Valuer',
+    cacnPrimaryReason: 'Năng lực phân tích, hiểu số liệu và pháp lý của bạn khớp hoàn toàn với vai trò thẩm định giá. Mỗi chứng thư thẩm định là một đơn hàng với hoa hồng minh bạch từ Citics.',
+    cacnSecondary: 'Legal / Pháp lý',
+    core: [
+      'Kiến thức sâu về pháp lý, quy hoạch, định giá',
+      'Phân tích dữ liệu tốt — Excel, dashboard, báo cáo thị trường',
+      'Uy tín với khách cao cấp, nhà đầu tư chuyên nghiệp',
+      'Nội dung chất lượng thu hút khách tự tìm đến',
+    ],
+    obstacle: [
+      'Nói nhiều về số liệu, ít chạm vào cảm xúc khi khách đang do dự',
+      'Phân tích quá chi tiết, khách mệt và có thể bỏ cuộc',
+      'Chọn lọc khách nên dòng khách ít, thu nhập chậm',
+      'Chuyên môn cao nhưng kỹ năng bán hàng chưa tương xứng',
+    ],
+    training: [
+      'Tham gia CACN với vai trò Valuer — biến chuyên môn thành đơn hàng đều đặn',
+      'Kiêm vai trò Legal/Pháp lý cho các vụ việc phức tạp từ mạng lưới',
+      'Xây nội dung chuyên gia đều đặn',
+      'Citics Valuer AI định giá rút ngắn thời gian làm chứng thư; CiCi AI tra cứu pháp lý, quy hoạch nhanh; Citics Portal lưu toàn bộ hồ sơ thẩm định có hệ thống',
+    ],
+    competitive: 'Thị trường VN đang chuyên nghiệp hoá — nhà đầu tư và ngân hàng ngày càng yêu cầu chứng thư thẩm định, số liệu thật. Valuer là vai trò tăng trưởng nhanh nhất trong CACN. Bạn đến đúng lúc.',
+  },
+  CLTC: {
+    code: 'CLTC',
+    name: 'Nhà Chiến Lược Tài Chính',
+    enName: 'Magician',
+    motto: 'Khách bảo không đủ tiền mua. Tôi cho họ thấy cách.',
+    portrait: 'Bạn giải bài toán tài chính cho khách. Am hiểu tín dụng, lãi suất, đòn bẩy. Chuyên xử lý deal phức tạp: khách có nhà cũ cần bán đồng thời, khách tự doanh, khách có nợ cũ.',
+    cacnPrimary: 'Mortgage Agent',
+    cacnPrimaryReason: 'Không ai khác. Vai trò này được sinh ra cho bạn. Hoa hồng Citics cho vay thế chấp đi thẳng vào hồ sơ khách bạn thiết kế.',
+    cacnSecondary: 'Valuer',
+    core: [
+      'Hiểu sâu về tín dụng, lãi suất, điều kiện vay từng ngân hàng',
+      'Sáng tạo giải pháp tài chính phù hợp với từng khách',
+      'Kết nối được với nhiều ngân hàng, nhân viên tín dụng',
+      'Chốt được deal mà người khác bảo "không khả thi"',
+    ],
+    obstacle: [
+      'Phụ thuộc quan hệ ngân hàng — rủi ro khi chính sách thay đổi',
+      'Mỗi deal cần thiết kế riêng nên khó làm đồng loạt nhiều khách',
+      'Tập trung giải pháp tài chính, đôi khi quên mục tiêu khách an tâm',
+      'Nếu tư vấn sai cấu trúc có thể phát sinh vấn đề pháp lý',
+    ],
+    training: [
+      'Tham gia CACN với vai trò Mortgage Agent — nhận hoa hồng Citics cho mỗi khoản vay thế chấp thành công',
+      'Chuẩn hoá 5-7 gói giải pháp tài chính thường dùng',
+      'Hợp tác với Buyer Agent trong mạng lưới để được giới thiệu khách có nhu cầu vay',
+      'Citics for Banks điều kiện tín dụng từ nhiều ngân hàng trên cùng màn hình; CiCi AI tra cứu nhanh lãi suất; Citics Portal theo dõi tiến độ từng hồ sơ vay',
+    ],
+    competitive: 'Việt Nam đang bước vào chu kỳ tín dụng phức tạp — lãi suất thả nổi, gói ưu đãi ngắn hạn, điều kiện vay thay đổi liên tục. Mortgage Agent là vai trò có nhu cầu bùng nổ. Bạn vào CACN là có sẵn dòng khách từ Buyer Agent trong mạng lưới.',
+  },
+  TP: {
+    code: 'TP',
+    name: 'Người Tiên Phong',
+    enName: 'Explorer',
+    motto: 'Khi ai cũng đã vào thị trường, tôi đã ở đó trước ba năm.',
+    portrait: 'Bạn là người đầu tiên đến khu đô thị mới, tỉnh mới, phân khúc mới. Nhạy với xu hướng, dám xa rời vùng an toàn. Thường là người mở đường cho cả công ty.',
+    cacnPrimary: 'Listing Agent (thị trường mới)',
+    cacnPrimaryReason: 'Bạn là người đầu tiên có nguồn hàng ở thị trường mà người khác chưa biết đến. Ký gửi độc quyền ở các đô thị cấp 2/3, các phân khúc mới.',
+    cacnSecondary: 'Store Manager',
+    core: [
+      'Nhạy cơ hội — nhìn thấy sóng trước người khác 6-12 tháng',
+      'Chấp nhận rủi ro, làm việc trong điều kiện chưa rõ ràng',
+      'Quan hệ rộng — có liên hệ ở nhiều tỉnh, nhiều phân khúc',
+      'Độc lập, chủ động, không cần ai cầm tay chỉ việc',
+    ],
+    obstacle: [
+      'Hay bắt đầu nhiều việc cùng lúc, khó hoàn thành hết',
+      'Danh sách khách tiềm năng bị đứt đoạn khi chuyển thị trường',
+      'Thu nhập không đều — có tháng rất cao, có tháng gần như không',
+      'Thiếu hệ thống lưu trữ nên dễ mất dữ liệu khi di chuyển',
+    ],
+    training: [
+      'Tham gia CACN với vai trò Listing Agent chuyên thị trường mới',
+      'Đặt nguyên tắc: vào thị trường mới phải ở lại tối thiểu 6 tháng',
+      'Khi thị trường định hình, cân nhắc chuyển sang Store Manager',
+      'Citics Portal làm "ngân hàng dữ liệu cá nhân" qua mọi thị trường; CiCi AI tra cứu nhanh quy hoạch, giá khu vực khi khảo sát',
+    ],
+    competitive: 'BĐS VN đang mở rộng ra đô thị cấp 2, cấp 3 và phân khúc mới. CACN cần những Người Tiên Phong đi trước để thiết lập sự hiện diện của Citics ở thị trường mới. Phần thưởng tương ứng với rủi ro bạn chấp nhận.',
+  },
+  KT: {
+    code: 'KT',
+    name: 'Người Kiến Tạo',
+    enName: 'Creator',
+    motto: 'Tôi không phải một môi giới. Tôi là một thương hiệu.',
+    portrait: 'Bạn xây thương hiệu cá nhân. Làm YouTube, TikTok, có trang Facebook, viết blog. Khách biết bạn trước khi gặp. Bạn là người có ảnh hưởng trong thế giới môi giới.',
+    cacnPrimary: 'Listing Agent (thương hiệu cá nhân)',
+    cacnPrimaryReason: 'Thương hiệu cá nhân giúp bạn hút nguồn hàng. Chủ nhà tin bạn vì họ đã theo dõi bạn lâu, ký gửi không cần thuyết phục.',
+    cacnSecondary: 'Buyer Agent',
+    core: [
+      'Sáng tạo nội dung tốt — viết, quay, biên tập, kể chuyện',
+      'Thương hiệu cá nhân rõ ràng — khách tự tìm đến',
+      'Hiểu tâm lý mạng xã hội, thuật toán, xu hướng',
+      'Tự do, không phụ thuộc sàn môi giới cụ thể',
+    ],
+    obstacle: [
+      'Dễ nhầm giữa lượt xem và doanh số',
+      'Tốn thời gian cho nội dung, thiếu thời gian cho nghiệp vụ',
+      'Thị trường người làm nội dung môi giới đang đông, cạnh tranh cao',
+      'Chạy theo xu hướng dễ làm mất chất riêng',
+    ],
+    training: [
+      'Tham gia CACN với vai trò Listing Agent — thương hiệu + nguồn hàng độc quyền + hoa hồng Citics',
+      'Đo lường rõ: bao nhiêu lượt xem → bao nhiêu khách liên hệ → bao nhiêu deal',
+      'Chuyên sâu 1 nền tảng thay vì dàn trải',
+      'Citics Portal theo dõi khách đến từ kênh nào, kết nối nội dung với doanh số; CiCi AI tra cứu dữ liệu dự án khi làm nội dung chuyên môn',
+    ],
+    competitive: 'Thế hệ người mua nhà trẻ quyết định dựa trên nội dung họ xem. Người Kiến Tạo là vai trò Listing Agent có chi phí tìm khách thấp nhất nếu làm đúng. Khi bạn kết hợp thương hiệu cá nhân với uy tín của Citics — vừa có sự tự do của người làm nội dung, vừa có độ tin cậy của tổ chức.',
+  },
+};
+
+/* ============================================================
+   DATA: 15 CÂU HỎI
+   Format: { q: '...', options: [{ text, scores: {code: points} }] }
+   ============================================================ */
+const QUESTIONS = [
+  {
+    q: 'Một khách vừa xem xong căn nhà và nói "em để anh/chị suy nghĩ thêm." Bạn phản ứng thế nào?',
+    options: [
+      { text: 'Hiểu tâm lý khách, không ép, nhắn hỏi thăm sau 2-3 ngày', scores: { DH: 3, KN: 1 } },
+      { text: 'Ngồi lại ngay, hỏi rõ điều khách còn băn khoăn để xử lý luôn', scores: { CP: 3, CLTC: 1 } },
+      { text: 'Gửi thêm 2-3 phân tích so sánh căn này với các căn khác tương đương', scores: { PT: 3, CLTC: 1 } },
+      { text: 'Gửi khách vài ảnh đẹp chụp từ buổi xem nhà, nhắc lại điểm khách thích', scores: { KN: 3, KT: 1 } },
+    ],
+  },
+  {
+    q: 'Khách hỏi: "Em có nghĩ căn này đáng mua không?" Bạn trả lời thế nào?',
+    options: [
+      { text: '"Em nghĩ anh/chị cần nhìn thêm số liệu giá khu vực 2 năm qua để quyết" — gửi bảng so sánh', scores: { PT: 3, CLTC: 1 } },
+      { text: '"Nếu là em, em sẽ xem thêm 2-3 lựa chọn nữa trước khi quyết định" — đưa list so sánh', scores: { DH: 2, PT: 2 } },
+      { text: '"Căn này phù hợp với anh/chị vì [lý do cá nhân cụ thể]" — gắn với cuộc sống khách mong muốn', scores: { KN: 3, DH: 1 } },
+      { text: '"Đáng. Anh/chị nên chốt sớm vì có khách khác cũng đang hỏi" — dồn khách ra quyết định', scores: { CP: 3, TP: 1 } },
+    ],
+  },
+  {
+    q: 'Khách không đủ tiền mặt, còn thiếu 30% giá trị căn nhà. Bạn làm gì?',
+    options: [
+      { text: 'Đề xuất gói vay phù hợp, tính toán dòng tiền trả hàng tháng cho khách xem', scores: { CLTC: 3, PT: 2 } },
+      { text: 'Giới thiệu 2-3 căn khác rẻ hơn, phù hợp ngân sách thực của khách', scores: { DH: 3, PT: 1 } },
+      { text: 'Liên hệ ngay 2-3 nhân viên tín dụng quen, tìm cách tối đa hạn mức vay', scores: { CLTC: 3, CP: 2 } },
+      { text: 'Đề xuất bán căn nhà cũ của khách trước, thiết kế kế hoạch giao dịch đồng thời', scores: { CLTC: 2, CP: 2, PT: 1 } },
+    ],
+  },
+  {
+    q: 'Khách thân (đã mua nhà cũ qua bạn) muốn bạn bán giúp BĐS, giá kỳ vọng cao hơn thị trường 15%. Bạn làm gì?',
+    options: [
+      { text: 'Nhận làm, chấp nhận khó khăn vì họ là khách cũ thân thiết', scores: { DH: 3, KN: 1 } },
+      { text: 'Từ chối nếu giá quá lệch — gợi ý họ định giá lại trước', scores: { PT: 3, DD: 1 } },
+      { text: 'Nhận làm, cùng khách xây câu chuyện thương hiệu cho căn nhà để biện minh mức giá', scores: { KN: 3, KT: 1 } },
+      { text: 'Nhận làm, thử chào 30 ngày, nếu không có khách sẽ thuyết phục hạ giá dựa trên dữ liệu', scores: { CP: 2, PT: 2, DD: 1 } },
+    ],
+  },
+  {
+    q: 'Bạn có 20 khách đang theo dõi. Hôm nay chỉ có 3 tiếng. Bạn chọn ai?',
+    options: [
+      { text: '3-4 khách "nóng" nhất — đang ở giai đoạn quyết định cuối', scores: { CP: 3, DD: 1 } },
+      { text: 'Khách cũ gọi hỏi chuyện ngoài mua bán — dành thời gian cho họ', scores: { DH: 3, KN: 1 } },
+      { text: 'Phân tích 20 khách theo tiêu chí, chọn nhóm có khả năng chốt cao nhất', scores: { PT: 3, DD: 2 } },
+      { text: 'Gọi thăm hỏi tất cả — mỗi người 5-10 phút, không ai bị bỏ sót', scores: { DH: 2, DD: 2 } },
+    ],
+  },
+  {
+    q: 'Một căn nhà có vấn đề pháp lý (sổ chung, tranh chấp nhỏ). Bạn thấy gì trước?',
+    options: [
+      { text: 'Cơ hội — giải quyết được pháp lý, có thể mua/bán giá tốt vì ít người dám động', scores: { TP: 3, CLTC: 2 } },
+      { text: 'Rủi ro — cần kiểm tra kỹ hồ sơ pháp lý trước khi khuyên khách', scores: { PT: 3, DH: 2 } },
+      { text: 'Thử thách — chốt được deal này sẽ chứng minh năng lực', scores: { CP: 3, PT: 1 } },
+      { text: 'Không nhận — tập trung căn "sạch" để tiết kiệm thời gian', scores: { DD: 2, PT: 1 } },
+    ],
+  },
+  {
+    q: 'Một dự án mới ra, bạn chưa có kinh nghiệm với chủ đầu tư. Cách tiếp cận?',
+    options: [
+      { text: 'Đến tận nơi khảo sát, tìm hiểu pháp lý, tiến độ, chất lượng xây dựng trước', scores: { PT: 3, TP: 1 } },
+      { text: 'Đi trước người khác — nếu đúng sóng, bạn là người đầu tiên có nguồn hàng', scores: { TP: 3, KT: 2 } },
+      { text: 'Đợi người khác bán thử, khi có phản hồi thật rồi mới tham gia', scores: { DH: 2, PT: 2 } },
+      { text: 'Liên hệ chủ đầu tư làm việc chính thức, đàm phán chính sách hoa hồng tốt cho đội', scores: { DD: 3, CLTC: 1 } },
+    ],
+  },
+  {
+    q: 'Hồ sơ vay phức tạp: khách tự doanh, có nợ cũ, muốn mua nhà 15 tỷ. Bạn cảm thấy thế nào?',
+    options: [
+      { text: 'Thích thú — bài toán hay, phải thiết kế cấu trúc vay sáng tạo', scores: { CLTC: 3, CP: 1 } },
+      { text: 'Muốn phân tích hồ sơ kỹ — thu nhập thật, dòng tiền, tài sản thế chấp khác', scores: { PT: 3, CLTC: 2 } },
+      { text: 'Xem có thể ghép 2-3 gói vay hoặc tìm ngân hàng có chính sách đặc biệt', scores: { CLTC: 3, DD: 1 } },
+      { text: 'Dành thời gian hỏi sâu tình hình kinh doanh của khách, hiểu họ trước', scores: { DH: 2, CLTC: 2 } },
+    ],
+  },
+  {
+    q: 'Gặp vấn đề pháp lý không chắc chắn, bạn xử lý thế nào?',
+    options: [
+      { text: 'Tra cứu tài liệu, quy định hiện hành — cần nắm chắc trước khi nói với khách', scores: { PT: 3, DH: 1 } },
+      { text: 'Hỏi đồng nghiệp có kinh nghiệm trong mạng lưới, học qua trao đổi', scores: { DH: 2, DD: 2 } },
+      { text: 'Đọc thêm nhiều trường hợp tương tự, rút ra nguyên tắc cho lần sau', scores: { PT: 3, KT: 1 } },
+      { text: 'Liên hệ chuyên viên pháp lý trong mạng lưới, nhờ xử lý giúp, mình tập trung chốt', scores: { CP: 3, DD: 1 } },
+    ],
+  },
+  {
+    q: 'Bạn quản lý danh sách khách như thế nào?',
+    options: [
+      { text: 'Có hệ thống (CRM, Excel) ghi chép đầy đủ từng khách, lịch chăm sóc, trạng thái', scores: { DD: 3, PT: 2 } },
+      { text: 'Chủ yếu nhớ trong đầu — khách quan trọng thì không thể quên', scores: { DH: 2, KN: 1 } },
+      { text: 'Note điều khách thích, hoàn cảnh gia đình, lần sau gặp sẽ hỏi thăm', scores: { DH: 3, KN: 2 } },
+      { text: 'Phân loại khách theo mức độ "nóng", tập trung năng lượng vào top', scores: { CP: 3, DD: 1 } },
+    ],
+  },
+  {
+    q: 'Nếu được tự do chọn cách làm việc, bạn thích mô hình nào?',
+    options: [
+      { text: 'Tự do, một mình, theo cảm hứng — không bị ràng buộc quy trình', scores: { TP: 3, KT: 2 } },
+      { text: 'Làm trong đội 3-5 người, mỗi người một vai, hỗ trợ nhau', scores: { DH: 2, DD: 2 } },
+      { text: 'Dẫn dắt đội 10+ người, xây hệ thống vận hành hiệu quả', scores: { DD: 3, CP: 1 } },
+      { text: 'Làm cá nhân nhưng kết nối chuyên gia khác khi cần (pháp lý, tài chính, định giá)', scores: { PT: 2, CLTC: 2 } },
+    ],
+  },
+  {
+    q: 'Hết tháng, bạn nhìn vào kết quả của mình. Điều quan trọng nhất bạn đánh giá là gì?',
+    options: [
+      { text: 'Doanh số — bao nhiêu deal đã chốt, bao nhiêu hoa hồng đã có', scores: { CP: 3, DD: 1 } },
+      { text: 'Chất lượng mối quan hệ — bao nhiêu khách hài lòng, bao nhiêu lời cảm ơn', scores: { DH: 3, KN: 1 } },
+      { text: 'Tỷ lệ chuyển đổi — bao nhiêu khách tiếp xúc thành khách chốt, cần cải thiện chỗ nào', scores: { PT: 3, DD: 2 } },
+      { text: 'Sự phát triển — tháng này học được gì mới, mở rộng được gì', scores: { KT: 2, TP: 2 } },
+    ],
+  },
+  {
+    q: 'Điều gì làm bạn hào hứng nhất trong công việc môi giới?',
+    options: [
+      { text: 'Cảm giác giúp một gia đình tìm được ngôi nhà mơ ước', scores: { DH: 3, KN: 2 } },
+      { text: 'Chốt được một deal khó mà người khác không làm được', scores: { CP: 3, CLTC: 1 } },
+      { text: 'Tìm ra một phân khúc hoặc thị trường mới mà chưa ai khai thác', scores: { TP: 3, KT: 1 } },
+      { text: 'Xây được thương hiệu cá nhân, khách tự tìm đến mình', scores: { KT: 3, TP: 1 } },
+    ],
+  },
+  {
+    q: '3 năm nữa, bạn muốn trở thành ai trong nghề?',
+    options: [
+      { text: 'Cố vấn tài chính BĐS uy tín, khách cao cấp tìm đến tư vấn', scores: { PT: 3, CLTC: 2 } },
+      { text: 'Nhà sáng lập/quản lý sàn có đội 20-50 môi giới', scores: { DD: 3, CP: 1 } },
+      { text: 'Người làm nội dung có ảnh hưởng, vừa bán hàng vừa truyền cảm hứng', scores: { KT: 3, TP: 2 } },
+      { text: 'Môi giới được khách cũ giới thiệu liên tục, không cần đi tìm khách mới', scores: { DH: 3, KN: 1 } },
+    ],
+  },
+  {
+    q: 'Nếu Citics mời bạn chọn 1 vai trò trong CACN — vai trò nào bạn tò mò nhất?',
+    options: [
+      { text: 'Listing Agent hoặc Buyer Agent — vẫn là nghiệp vụ gốc của môi giới', scores: { DH: 2, CP: 2, KN: 1 } },
+      { text: 'Mortgage Agent hoặc Valuer — nghề chuyên sâu về tài chính/dữ liệu', scores: { CLTC: 3, PT: 2 } },
+      { text: 'Store Manager — quản lý và dẫn dắt đội', scores: { DD: 3, CP: 1 } },
+      { text: 'Chưa chắc, muốn khám phá để tìm vai trò phù hợp nhất', scores: { TP: 3, KT: 2 } },
+    ],
+  },
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  screen: 'landing',      // 'landing' | 'quiz' | 'lead' | 'result'
+  currentQ: 0,            // index câu hỏi hiện tại
+  answers: {},            // { 0: optionIdx, 1: optionIdx, ... }
+  scores: {},             // { DH: 0, KN: 0, ... }
+  lead: { name: '', phone: '', email: '', consent: false },
+  result: null,           // { primary: ARCHETYPE, secondary: ARCHETYPE }
+};
+
+/* ============================================================
+   SCORING
+   ============================================================ */
+function calculateScores() {
+  const scores = { DH: 0, KN: 0, CP: 0, DD: 0, PT: 0, CLTC: 0, TP: 0, KT: 0 };
+  Object.entries(state.answers).forEach(([qIdx, optIdx]) => {
+    const chosen = QUESTIONS[qIdx].options[optIdx];
+    Object.entries(chosen.scores).forEach(([code, pts]) => {
+      scores[code] += pts;
+    });
+  });
+  return scores;
+}
+
+function determineResult() {
+  const scores = calculateScores();
+  state.scores = scores;
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  state.result = {
+    primary: ARCHETYPES[sorted[0][0]],
+    secondary: ARCHETYPES[sorted[1][0]],
+    scoreDistribution: sorted,
+  };
+}
+
+/* ============================================================
+   RENDER FUNCTIONS
+   ============================================================ */
+const app = document.getElementById('app');
+
+function render() {
+  app.innerHTML = '';
+  const screen = document.createElement('div');
+  screen.className = 'screen';
+
+  if (state.screen === 'landing') screen.appendChild(renderLanding());
+  else if (state.screen === 'quiz') screen.appendChild(renderQuiz());
+  else if (state.screen === 'lead') screen.appendChild(renderLeadGate());
+  else if (state.screen === 'result') screen.appendChild(renderResult());
+
+  app.appendChild(screen);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* --- LANDING --- */
+function renderLanding() {
+  const el = document.createElement('div');
+  el.innerHTML = `
+    <div class="text-center py-6 sm:py-12">
+      <div class="inline-block mb-4">
+        <span class="badge badge-secondary">Trắc nghiệm hành vi · 3-4 phút</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-neutral-900 mb-4 leading-tight">
+        Bạn là kiểu<br>môi giới nào?
+      </h1>
+      <p class="text-base sm:text-lg text-neutral-600 leading-relaxed max-w-md mx-auto mb-8">
+        Khám phá nguyên mẫu môi giới của bạn theo Carl Jung,
+        và tìm vai trò phù hợp trong mạng lưới CACN Citics —
+        nơi hoa hồng minh bạch, công cụ đầy đủ, mạng lưới chuyên nghiệp.
+      </p>
+
+      <button id="start-btn" class="btn-primary inline-flex items-center gap-2">
+        Bắt đầu trắc nghiệm
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+
+      <div class="mt-10 pt-8 border-t border-neutral-100">
+        <p class="text-sm text-neutral-500 mb-4">Điều bạn sẽ nhận được:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left max-w-md mx-auto">
+          ${[
+            '8 nguyên mẫu môi giới theo Jung',
+            'Vai trò CACN phù hợp với bạn',
+            '4 chiều phân tích cá nhân hoá',
+            'Chính sách hoa hồng Citics tương ứng',
+          ].map(item => `
+            <div class="flex items-start gap-2 text-sm text-neutral-700">
+              <svg class="flex-shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0741DA" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>${item}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  el.querySelector('#start-btn').addEventListener('click', () => {
+    state.screen = 'quiz';
+    state.currentQ = 0;
+    render();
+  });
+  return el;
+}
+
+/* --- QUIZ --- */
+function renderQuiz() {
+  const q = QUESTIONS[state.currentQ];
+  const totalQ = QUESTIONS.length;
+  const progress = ((state.currentQ) / totalQ) * 100;
+  const answered = state.answers[state.currentQ] !== undefined;
+
+  const el = document.createElement('div');
+  el.innerHTML = `
+    <!-- Progress bar -->
+    <div class="mb-6">
+      <div class="flex justify-between items-center mb-2 text-sm">
+        <span class="text-neutral-500 font-medium">Câu ${state.currentQ + 1} / ${totalQ}</span>
+        <span class="text-neutral-400">${Math.round(progress)}% hoàn thành</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: ${((state.currentQ + (answered ? 1 : 0)) / totalQ) * 100}%"></div>
+      </div>
+    </div>
+
+    <!-- Question -->
+    <h2 class="text-xl sm:text-2xl font-semibold text-neutral-900 mb-6 leading-snug">
+      ${q.q}
+    </h2>
+
+    <!-- Options -->
+    <div id="options-container">
+      ${q.options.map((opt, idx) => `
+        <button class="option-btn ${state.answers[state.currentQ] === idx ? 'selected' : ''}" data-idx="${idx}">
+          <span class="option-letter">${String.fromCharCode(65 + idx)}</span>
+          ${opt.text}
+        </button>
+      `).join('')}
+    </div>
+
+    <!-- Nav -->
+    <div class="flex justify-between items-center mt-8">
+      <button id="prev-btn" class="btn-ghost ${state.currentQ === 0 ? 'invisible' : ''}">
+        ← Quay lại
+      </button>
+      <button id="next-btn" class="btn-primary" ${!answered ? 'disabled' : ''}>
+        ${state.currentQ === totalQ - 1 ? 'Xem kết quả' : 'Tiếp theo →'}
+      </button>
+    </div>
+  `;
+
+  // Events
+  el.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx'));
+      state.answers[state.currentQ] = idx;
+      render();
+    });
+  });
+
+  el.querySelector('#prev-btn').addEventListener('click', () => {
+    if (state.currentQ > 0) {
+      state.currentQ--;
+      render();
+    }
+  });
+
+  el.querySelector('#next-btn').addEventListener('click', () => {
+    if (state.answers[state.currentQ] === undefined) return;
+    if (state.currentQ < totalQ - 1) {
+      state.currentQ++;
+      render();
+    } else {
+      state.screen = 'lead';
+      render();
+    }
+  });
+
+  return el;
+}
+
+/* --- LEAD GATE --- */
+function renderLeadGate() {
+  const el = document.createElement('div');
+  el.innerHTML = `
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-14 h-14 bg-primary-50 rounded-full mb-4">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0741DA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">
+        Kết quả của bạn đã sẵn sàng
+      </h2>
+      <p class="text-neutral-600 leading-relaxed">
+        Vui lòng để lại thông tin để xem phân tích chi tiết nguyên mẫu
+        và vai trò CACN phù hợp với bạn.
+      </p>
+    </div>
+
+    <form id="lead-form" class="space-y-4" novalidate>
+      <div>
+        <label class="block text-sm font-medium text-neutral-700 mb-1.5">Họ và tên</label>
+        <input class="input" type="text" id="lead-name" placeholder="Nguyễn Văn A" required value="${state.lead.name}">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-neutral-700 mb-1.5">Số điện thoại</label>
+        <input class="input" type="tel" id="lead-phone" placeholder="0912 xxx xxx" required pattern="[0-9\\s]{9,15}" value="${state.lead.phone}">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-neutral-700 mb-1.5">Email</label>
+        <input class="input" type="email" id="lead-email" placeholder="ban@email.com" required value="${state.lead.email}">
+      </div>
+      <label class="flex items-start gap-2 text-sm text-neutral-600 cursor-pointer pt-2">
+        <input type="checkbox" id="lead-consent" class="mt-1 accent-primary-500" ${state.lead.consent ? 'checked' : ''}>
+        <span>Tôi đồng ý để Citics liên hệ tư vấn về CACN và các cơ hội phù hợp với kết quả của tôi.</span>
+      </label>
+      <div id="lead-error" class="text-sm text-red-600 hidden"></div>
+      <button type="submit" class="btn-primary w-full mt-4">
+        Xem kết quả cá nhân hoá →
+      </button>
+    </form>
+
+    <p class="text-xs text-neutral-400 text-center mt-4">
+      Thông tin của bạn được bảo mật theo <a href="https://citics.vn/phap-ly-chi-tiet/chinh-sach-rieng-tu" class="text-primary-500 hover:underline">chính sách riêng tư</a> của Citics.
+    </p>
+  `;
+
+  el.querySelector('#lead-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = el.querySelector('#lead-name').value.trim();
+    const phone = el.querySelector('#lead-phone').value.trim();
+    const email = el.querySelector('#lead-email').value.trim();
+    const consent = el.querySelector('#lead-consent').checked;
+    const errorEl = el.querySelector('#lead-error');
+
+    if (!name || !phone || !email) {
+      errorEl.textContent = 'Vui lòng điền đầy đủ thông tin.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    if (!/^[0-9\s]{9,15}$/.test(phone)) {
+      errorEl.textContent = 'Số điện thoại không hợp lệ.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorEl.textContent = 'Email không hợp lệ.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    if (!consent) {
+      errorEl.textContent = 'Vui lòng đồng ý điều khoản để tiếp tục.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+
+    state.lead = { name, phone, email, consent };
+    determineResult();
+
+    // Hook để team dev gắn analytics/CRM backend
+    trackEvent('quiz_lead_submitted', {
+      archetype_primary: state.result.primary.code,
+      archetype_secondary: state.result.secondary.code,
+      cacn_role: state.result.primary.cacnPrimary,
+    });
+    saveLead(state.lead, state.result);
+
+    state.screen = 'result';
+    render();
+  });
+
+  return el;
+}
+
+/* --- RESULT --- */
+function renderResult() {
+  const { primary, secondary } = state.result;
+
+  const el = document.createElement('div');
+  el.className = 'result-reveal';
+  el.innerHTML = `
+    <!-- Hero -->
+    <div class="text-center py-4 mb-8 bg-gradient-to-b from-primary-50 to-white -mx-4 sm:-mx-6 px-4 sm:px-6 py-10 rounded-2xl border border-primary-100">
+      <p class="text-sm text-primary-600 font-medium mb-2">${state.lead.name}, bạn là</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 mb-2 leading-tight">
+        ${primary.name}
+      </h1>
+      <p class="text-base text-neutral-500 mb-4">× ${secondary.name}</p>
+      <p class="text-base text-neutral-700 italic max-w-md mx-auto leading-relaxed">
+        "${primary.motto}"
+      </p>
+    </div>
+
+    <!-- Portrait -->
+    <div class="mb-8">
+      <p class="text-neutral-700 leading-relaxed text-base sm:text-lg">
+        ${primary.portrait}
+      </p>
+    </div>
+
+    <!-- 🎯 Vai trò CACN -->
+    <div class="bg-primary-50 border border-primary-100 rounded-2xl p-6 mb-8">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-xl">🎯</span>
+        <h3 class="text-lg font-semibold text-neutral-900">Vai trò CACN phù hợp với bạn</h3>
+      </div>
+
+      <div class="mb-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="badge badge-primary">Chính</span>
+          <span class="text-xl font-bold text-primary-700">${primary.cacnPrimary}</span>
+        </div>
+        <p class="text-sm text-neutral-700 leading-relaxed">${primary.cacnPrimaryReason}</p>
+      </div>
+
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="badge badge-secondary">Phụ</span>
+          <span class="text-lg font-semibold text-primary-700">${primary.cacnSecondary}</span>
+          <span class="text-sm text-neutral-500">(bổ sung từ ${secondary.name})</span>
+        </div>
+        <p class="text-sm text-neutral-700 leading-relaxed">
+          Nguyên mẫu phụ ${secondary.name} cho thấy bạn có thể mở rộng sang vai trò <strong>${secondary.cacnPrimary}</strong> khi cảm thấy sẵn sàng.
+        </p>
+      </div>
+    </div>
+
+    <!-- 4 dimensions -->
+    <div class="space-y-6 mb-8">
+      ${renderDimension('Năng lực lõi', '💎', primary.core, 'primary')}
+      ${renderDimension('Chướng ngại', '⚠️', primary.obstacle, 'neutral')}
+      ${renderDimension('Hướng rèn luyện', '📈', primary.training, 'primary')}
+    </div>
+
+    <!-- Competitive advantage -->
+    <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-6 mb-8">
+      <h3 class="text-lg font-semibold text-neutral-900 mb-3 flex items-center gap-2">
+        <span>🏆</span> Lợi thế cạnh tranh trong CACN
+      </h3>
+      <p class="text-neutral-700 leading-relaxed">${primary.competitive}</p>
+    </div>
+
+    <!-- Score distribution (mini chart) -->
+    <div class="mb-8">
+      <h3 class="text-base font-semibold text-neutral-700 mb-3">Phân bố nguyên mẫu của bạn</h3>
+      <div class="space-y-2">
+        ${state.result.scoreDistribution.map(([code, score]) => {
+          const a = ARCHETYPES[code];
+          const maxScore = state.result.scoreDistribution[0][1];
+          const pct = maxScore > 0 ? (score / maxScore) * 100 : 0;
+          const isPrimary = code === primary.code;
+          const isSecondary = code === secondary.code;
+          return `
+            <div class="flex items-center gap-3 text-sm">
+              <div class="w-36 sm:w-44 text-neutral-700 ${isPrimary ? 'font-semibold text-primary-700' : ''} ${isSecondary ? 'font-medium' : ''}">
+                ${a.name}
+              </div>
+              <div class="flex-1 h-2 bg-neutral-100 rounded-full overflow-hidden">
+                <div class="h-full ${isPrimary ? 'bg-primary-500' : isSecondary ? 'bg-primary-300' : 'bg-neutral-300'}" style="width: ${pct}%"></div>
+              </div>
+              <div class="w-10 text-right text-neutral-500 text-xs">${score}đ</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="bg-primary-500 text-white rounded-2xl p-6 sm:p-8 text-center mb-6">
+      <h3 class="text-xl sm:text-2xl font-bold mb-2">
+        Tham gia CACN với vai trò <br class="sm:hidden">${primary.cacnPrimary}
+      </h3>
+      <p class="text-primary-100 mb-6 leading-relaxed max-w-md mx-auto">
+        Hoa hồng minh bạch · Mạng lưới chuyên nghiệp · Công cụ đầy đủ.
+        <br>Xem chính sách hoa hồng chi tiết dành cho bạn.
+      </p>
+      <a href="https://citics.vn/tin-tuc/cap-nhat-chinh-sach-hoa-hong-mo-khoa-co-hoi-but-pha-thu-nhap"
+         target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 bg-white text-primary-700 font-semibold px-6 py-3 rounded-pill hover:bg-primary-50 transition">
+        Xem chính sách hoa hồng
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- Footer actions -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4">
+      <button id="retake-btn" class="btn-ghost">
+        ↻ Làm lại trắc nghiệm
+      </button>
+      <button id="share-btn" class="btn-ghost">
+        Chia sẻ kết quả
+      </button>
+    </div>
+  `;
+
+  el.querySelector('#retake-btn').addEventListener('click', () => {
+    if (!confirm('Bạn có chắc muốn làm lại? Kết quả hiện tại sẽ bị xoá.')) return;
+    state.screen = 'landing';
+    state.currentQ = 0;
+    state.answers = {};
+    state.scores = {};
+    state.result = null;
+    render();
+  });
+
+  el.querySelector('#share-btn').addEventListener('click', () => {
+    const text = `Tôi là ${primary.name} × ${secondary.name} — vai trò CACN phù hợp: ${primary.cacnPrimary}. Làm trắc nghiệm tại Citics Agent.`;
+    if (navigator.share) {
+      navigator.share({ title: 'Kết quả Citics Agent', text, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(text + ' ' + window.location.href);
+      alert('Đã sao chép nội dung chia sẻ!');
+    }
+  });
+
+  return el;
+}
+
+function renderDimension(title, emoji, items, color) {
+  return `
+    <div>
+      <h3 class="text-lg font-semibold text-neutral-900 mb-3 flex items-center gap-2">
+        <span>${emoji}</span> ${title}
+      </h3>
+      <ul class="space-y-2">
+        ${items.map(item => `
+          <li class="flex items-start gap-3 text-neutral-700 leading-relaxed">
+            <span class="flex-shrink-0 mt-2 w-1.5 h-1.5 ${color === 'primary' ? 'bg-primary-500' : 'bg-neutral-400'} rounded-full"></span>
+            <span>${item}</span>
+          </li>
+        `).join('')}
+      </ul>
+    </div>
+  `;
+}
+
+/* ============================================================
+   HOOKS CHO TEAM DEV (thay bằng backend thật khi deploy)
+   ============================================================ */
+function trackEvent(eventName, properties) {
+  // TODO: gắn GA4 / Mixpanel / Segment ở đây
+  // Ví dụ: gtag('event', eventName, properties);
+  console.log('[track]', eventName, properties);
+}
+
+function saveLead(lead, result) {
+  // TODO: gọi API backend của Citics lưu lead vào CRM
+  // Ví dụ:
+  // fetch('/api/leads', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({ ...lead, archetype: result.primary.code, cacn_role: result.primary.cacnPrimary })
+  // });
+  console.log('[saveLead]', lead, {
+    archetype_primary: result.primary.code,
+    archetype_secondary: result.secondary.code,
+    cacn_role: result.primary.cacnPrimary,
+  });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+render();
+</script>
+
+</body>
+</html>
